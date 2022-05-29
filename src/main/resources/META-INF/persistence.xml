@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+	version="2.0">
+
+	<persistence-unit name="jeeHibernateSamples"
+		transaction-type="JTA">
+		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+		<jta-data-source>jdbc/mysql_ds_first_crud</jta-data-source>
+
+		<properties>
+			<property name="hibernate.generate_statistics" value="false" />
+<!--	        <property name="hibernate.show_sql" value="true" />-->
+	        <property name="hibernate.show_sql" value="false" />
+            <property name="hibernate.format_sql" value="true" />
+            <property name="hibernate.use_sql_comments" value="true" />
+	        <property name="hibernate.level" value="ALL" />
+	        <property name="hibernate.logging.level" value="ALL" />
+	        <property name="hibernate.dialect" value="org.hibernate.dialect.MariaDBDialect" />
+   			<property name="transaction.coordinator_class" value="jta" />
+   			<property name="hibernate.transaction.jta.platform" value="org.hibernate.engine.transaction.jta.platform.internal.WeblogicJtaPlatform" />
+   			<property name="hibernate.connection.handling_mode" value="DELAYED_ACQUISITION_AND_RELEASE_AFTER_STATEMENT" />
+   			<property name="hibernate.hbm2ddl.auto" value="update" />
+
+		</properties>
+	</persistence-unit>
+	
+</persistence>

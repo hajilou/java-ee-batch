@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<job id="postItemChunk" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/jobXML_1_0.xsd"
+     version="1.0">
+
+    <listeners>
+        <listener ref="generalJobListener"/>
+    </listeners>
+    <step id="firstChunkStep">
+        <properties>
+            <property name="partitionNumber" value="#{partitionPlan['partitionNumber']}"/>
+        </properties>
+        <listeners>
+            <listener ref="generalChunkListener">
+            </listener>
+        </listeners>
+        <chunk item-count="5">
+            <reader ref="postItemChunkReader">
+                <properties>
+                    <property name="start" value="#{partitionPlan['start']}"/>
+                    <property name="end" value="#{partitionPlan['end']}"/>
+                    <property name="idList" value="#{partitionPlan['idList']}"/>
+                    <property name="partitionNumber" value="#{partitionPlan['partitionNumber']}"/>
+                </properties>
+            </reader>
+            <processor ref="postItemChunkProcessor">
+                <properties>
+                    <property name="partitionNumber" value="#{partitionPlan['partitionNumber']}"/>
+                </properties>
+            </processor>
+            <writer ref="postItemChunkWriter">
+                <properties>
+                    <property name="partitionNumber" value="#{partitionPlan['partitionNumber']}"/>
+                </properties>
+            </writer>
+
+            <!--            <skippable-exception-classes>-->
+            <!--                <include class="java.lang.RuntimeException"/>-->
+            <!--            </skippable-exception-classes>-->
+            <!--            <retryable-exception-classes>-->
+            <!--                <include class="java.lang.IllegalArgumentException"/>-->
+            <!--            </retryable-exception-classes>-->
+        </chunk>
+
+        <partition>
+            <mapper ref="postItemPartitionMapper"/>
+        </partition>
+    </step>
+</job>
